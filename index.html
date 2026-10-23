@@ -1,0 +1,644 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>REWAVE | Recover the Drop</title>
+
+<style>
+:root {
+  --bg:#030712;
+  --panel:#081426;
+  --blue:#0755e9;
+  --cyan:#22d3ee;
+  --green:#39ff88;
+  --yellow:#ffd43b;
+  --red:#ff4d6d;
+  --white:#f8fafc;
+  --muted:#94a3b8;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--white);
+  font-family:Arial,Helvetica,sans-serif;
+  background-image:
+    radial-gradient(circle at 10% 5%,#0755e933,transparent 30%),
+    radial-gradient(circle at 90% 35%,#22d3ee18,transparent 28%);
+}
+a{color:inherit;text-decoration:none}
+button{
+  padding:12px 17px;border:0;border-radius:12px;
+  background:linear-gradient(100deg,var(--cyan),var(--green));
+  color:#03111e;font-weight:bold;cursor:pointer;
+  transition:.2s;
+}
+button:hover{transform:translateY(-2px);filter:brightness(1.1)}
+input,select{
+  width:100%;padding:11px;border-radius:9px;
+  border:1px solid #234761;background:#030b16;color:white;
+}
+nav{
+  position:sticky;top:0;z-index:10;padding:15px 5%;
+  background:#030712eF;backdrop-filter:blur(14px);
+  border-bottom:1px solid #18334d;
+  display:flex;justify-content:space-between;align-items:center;gap:15px;
+}
+.logo{font-size:25px;font-weight:1000;letter-spacing:3px}
+.logo span{color:var(--cyan)}
+.navlinks{display:flex;gap:18px;flex-wrap:wrap;font-size:13px}
+.navlinks a:hover{color:var(--green)}
+.wrap{width:min(1150px,92%);margin:auto}
+.hero{
+  min-height:570px;padding:65px 0;display:grid;
+  grid-template-columns:1fr 1fr;gap:30px;align-items:center;
+}
+.tag{
+  color:var(--green);font-size:12px;font-weight:bold;
+  letter-spacing:2px;border:1px solid #39ff8855;
+  padding:9px 12px;border-radius:30px;display:inline-block;
+}
+h1{
+  font-size:clamp(65px,10vw,120px);line-height:.9;
+  margin:24px 0 18px;letter-spacing:-7px;
+  background:linear-gradient(100deg,#fff,var(--cyan),var(--green));
+  color:transparent;background-clip:text;
+}
+h2{font-size:clamp(26px,4vw,42px);margin:12px 0}
+h3{margin:8px 0}
+p{color:#b4c8dc;line-height:1.7}
+.hero p{max-width:550px}
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin:25px 0}
+.secondary{background:#0a1c31;color:white;border:1px solid #245278}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{
+  padding:8px 10px;border:1px solid #1d4665;
+  background:#081b30;border-radius:9px;font-size:11px;color:#c9f7ff;
+}
+.art{
+  height:410px;position:relative;overflow:hidden;border-radius:28px;
+  border:1px solid #1a4c72;
+  background:linear-gradient(145deg,#0b2450,#061323 60%,#06403c);
+  box-shadow:0 0 50px #168bff18;
+}
+.bigdrop{
+  position:absolute;top:35px;left:39%;width:110px;height:140px;
+  border-radius:55% 45% 60% 40% / 65% 65% 35% 35%;
+  background:linear-gradient(135deg,#fff,#22d3ee 30%,#0755e9 80%);
+  box-shadow:inset -12px -12px 20px #001b6d,0 0 45px #22d3ee99;
+  animation:float 4s infinite ease-in-out;
+}
+@keyframes float{50%{transform:translateY(-15px) rotate(4deg)}}
+.buildings{
+  position:absolute;bottom:0;width:100%;height:35%;
+  background:repeating-linear-gradient(90deg,#102c49 0 35px,#22d3ee 36px 40px,#071323 41px 60px);
+  border-top:3px solid var(--cyan);
+}
+.machine{
+  position:absolute;bottom:20%;left:9%;width:95px;height:110px;
+  background:#0a1d31;border:2px solid var(--cyan);border-radius:13px;
+  padding:12px;box-shadow:0 0 25px #22d3ee33;
+}
+.tank{
+  position:absolute;bottom:20%;right:9%;width:80px;height:120px;
+  border:2px solid var(--cyan);border-radius:12px;
+  background:linear-gradient(to top,#168bff 48%,#0b1d33 48%);
+  box-shadow:0 0 25px #168bff55;
+}
+.pipe{
+  position:absolute;bottom:31%;left:29%;width:42%;height:5px;
+  background:linear-gradient(90deg,var(--cyan),var(--green));
+  box-shadow:0 0 16px var(--cyan);
+}
+.lights{display:flex;gap:8px;margin-top:25px}
+.light{width:13px;height:13px;border-radius:50%;background:var(--green);box-shadow:0 0 12px currentColor}
+.light.y{background:var(--yellow)}
+.light.r{background:var(--red)}
+.bubble{position:absolute;color:var(--aqua);font-size:28px;animation:float 3s infinite}
+.b1{top:15%;left:10%}.b2{top:35%;right:10%}.b3{bottom:30%;left:40%}
+section{padding:45px 0}
+.kicker{color:var(--cyan);font-size:12px;letter-spacing:2px;font-weight:bold}
+.sectionhead{margin-bottom:22px}
+.grid{display:grid;gap:15px}
+.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.four{grid-template-columns:repeat(4,minmax(0,1fr))}
+.card{
+  position:relative;overflow:hidden;padding:20px;border-radius:19px;
+  background:linear-gradient(145deg,#0b1d33,#06101f);
+  border:1px solid #1b3d5b;
+}
+.card p{font-size:14px}
+.icon{font-size:30px;margin-bottom:12px}
+.steps{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}
+.step{
+  background:#08182a;border:1px solid #1d4968;
+  border-radius:14px;padding:15px 10px;text-align:center;
+}
+.step b{display:block;margin:8px 0}
+.step p{font-size:12px}
+.num{
+  display:inline-grid;place-items:center;width:28px;height:28px;
+  border-radius:50%;background:linear-gradient(130deg,var(--cyan),var(--green));
+  color:#03111e;font-weight:bold;
+}
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
+.field{margin:13px 0}
+.field label{display:block;font-size:13px;margin-bottom:7px;color:#c7d9e9}
+input[type=range]{padding:0;accent-color:var(--cyan)}
+.metric{
+  background:#030b16;border:1px solid #173954;
+  border-radius:13px;padding:14px;
+}
+.metric span{display:block;font-size:12px;color:var(--muted);margin-bottom:7px}
+.metric strong{font-size:22px}
+.meter{height:13px;background:#020812;border-radius:30px;overflow:hidden;margin:12px 0}
+.fill{height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--green));transition:.3s}
+.status{
+  display:flex;align-items:center;gap:12px;
+  background:#030b16;border:1px solid #18334d;border-radius:12px;padding:13px;
+}
+.bulb{width:17px;height:17px;border-radius:50%;background:var(--green);box-shadow:0 0 15px currentColor}
+.yellow{background:var(--yellow)}
+.red{background:var(--red)}
+.budgetgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.budgetitem{padding:12px;background:#06111f;border:1px solid #1b3d5b;border-radius:12px}
+.budgetitem label{display:block;font-size:12px;margin-bottom:7px}
+.budgetitem small{color:var(--muted);font-size:11px}
+.barrow{display:grid;grid-template-columns:95px 1fr 65px;gap:8px;align-items:center;font-size:12px;margin:12px 0}
+.bar{height:9px;background:#020812;border-radius:10px;overflow:hidden}
+.bar span{display:block;height:100%;background:linear-gradient(90deg,var(--blue),var(--cyan),var(--green))}
+.appart{height:150px;display:grid;place-items:center;font-size:60px;background:linear-gradient(135deg,#0755e9,#22d3ee,#22c55e44);border-radius:12px}
+.answer{min-height:80px;background:#030b16;border:1px solid #1b3d5b;border-radius:12px;padding:14px;line-height:1.6}
+footer{text-align:center;padding:35px;border-top:1px solid #17344c;color:var(--muted)}
+.small{font-size:11px;color:var(--muted)}
+@media(max-width:850px){
+ .hero{grid-template-columns:1fr}.steps{grid-template-columns:repeat(3,1fr)}
+ .four{grid-template-columns:repeat(2,1fr)}
+ .navlinks{gap:9px}
+}
+@media(max-width:560px){
+ nav{align-items:flex-start}.navlinks{max-width:65%;font-size:11px}
+ .two,.three,.four,.budgetgrid{grid-template-columns:1fr}
+ .steps{grid-template-columns:repeat(2,1fr)}
+ .art{height:330px}.hero{padding-top:35px}
+ h1{letter-spacing:-4px}
+}
+</style>
+</head>
+
+<body>
+<nav>
+  <a class="logo" href="#home">RE<span>WAVE</span> 💧</a>
+  <div class="navlinks">
+    <a href="#system">System</a>
+    <a href="#demo">Live Demo</a>
+    <a href="#budget">Cost Planner</a>
+    <a href="#savings">Water Savings</a>
+    <a href="#impact">Impact</a>
+  </div>
+</nav>
+
+<main>
+<section class="wrap hero" id="home">
+  <div>
+    <span class="tag">💧 SDG 6 · SDG 11 · WATER INNOVATION</span>
+    <h1>REWAVE</h1>
+    <h2>Every drop deserves a <span style="color:var(--cyan)">second life.</span></h2>
+    <p>Turning suitable water from everyday washbasins and showers into a monitored, reusable resource for college campuses and communities — with an affordable, modular system.</p>
+    <div class="actions">
+      <a href="#system"><button>EXPLORE REWAVE ↘</button></a>
+      <a href="#demo"><button class="secondary">TRY LIVE DEMO ◉</button></a>
+    </div>
+    <div class="chips">
+      <span class="chip">◉ SMART TURBIDITY CHECK</span>
+      <span class="chip">▥ REPLACEABLE FILTERS</span>
+      <span class="chip">₹ PILOT TARGET: ₹5 LAKH</span>
+    </div>
+    <p class="small">Budget is an illustrative planning target, not a supplier quotation.</p>
+  </div>
+  <div class="art">
+    <span class="bubble b1">✦</span><span class="bubble b2">◌</span>
+    <span class="bubble b3">💧</span>
+    <div class="bigdrop"></div>
+    <div class="pipe"></div>
+    <div class="machine">
+      <div style="font-size:10px;color:var(--cyan)">FILTER UNIT</div>
+      <div class="lights"><i class="light"></i><i class="light y"></i><i class="light r"></i></div>
+    </div>
+    <div class="tank"></div>
+    <div class="buildings"></div>
+    <div style="position:absolute;top:18px;left:18px;font-size:11px;letter-spacing:2px">WATER • TECH • TOMORROW</div>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="sectionhead">
+    <div class="kicker">01 / THE OPPORTUNITY</div>
+    <h2>Why let reusable water go down the drain?</h2>
+    <p>Suitable washbasin and shower water may offer a reuse opportunity when collected, treated and checked for the intended use.</p>
+  </div>
+  <div class="grid two">
+    <div class="card">
+      <div class="icon">🚰</div><h3>WITHOUT REWAVE</h3>
+      <p>Washbasin → Drain → Lost reuse opportunity.</p>
+      <div class="chips"><span class="chip">No recovery tracking</span><span class="chip">Fresh water demand</span></div>
+    </div>
+    <div class="card">
+      <div class="icon">💧</div><h3 style="color:var(--green)">WITH REWAVE</h3>
+      <p>Collect → Filter → Turbidity check → Approved storage → Reuse.</p>
+      <div class="chips"><span class="chip">Quality-aware routing</span><span class="chip">Non-potable reuse</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap" id="system">
+  <div class="kicker">02 / THE SYSTEM</div>
+  <h2>How REWAVE works</h2>
+  <div class="steps">
+    <div class="step"><span class="num">1</span><div class="icon">🚿</div><b>COLLECT</b><p>Collect suitable source water separately.</p></div>
+    <div class="step"><span class="num">2</span><div class="icon">🧰</div><b>FILTER</b><p>Use selected filter media and treatment.</p></div>
+    <div class="step"><span class="num">3</span><div class="icon">🔬</div><b>CHECK</b><p>Monitor turbidity and route accordingly.</p></div>
+    <div class="step"><span class="num">4</span><div class="icon">🛢️</div><b>STORE</b><p>Store water after required checks pass.</p></div>
+    <div class="step"><span class="num">5</span><div class="icon">🌱</div><b>REUSE</b><p>Use for suitable non-drinking purposes.</p></div>
+    <div class="step"><span class="num">6</span><div class="icon">↪️</div><b>DIVERT</b><p>Route rejected water appropriately.</p></div>
+  </div>
+
+  <div class="grid two" style="margin-top:15px">
+    <div class="card">
+      <h3>🧪 Explore filter layers</h3>
+      <div class="controls">
+        <button class="secondary" onclick="layer(0)">Mesh</button>
+        <button class="secondary" onclick="layer(1)">Gravel</button>
+        <button class="secondary" onclick="layer(2)">Sand</button>
+        <button class="secondary" onclick="layer(3)">Extra media</button>
+      </div>
+      <p id="layerText">Choose a filter layer to explore its role.</p>
+    </div>
+    <div class="card">
+      <h3>🔬 What is turbidity?</h3>
+      <p>Turbidity measures water cloudiness caused by suspended particles. It cannot prove that water is free of harmful microbes or chemicals.</p>
+      <div class="chips">
+        <span class="chip">🟢 Pass configured check</span>
+        <span class="chip">🟡 Hold / recheck</span>
+        <span class="chip">🔴 Reject / divert</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap" id="demo">
+  <div class="kicker">03 / INTERACTIVE SIMULATION</div>
+  <h2>Take control of the water</h2>
+  <p>These are simulated readings. No physical sensor is connected.</p>
+  <div class="grid two">
+    <div class="card">
+      <div class="controls">
+        <button onclick="startDemo()">▶ START DEMO</button>
+        <button class="secondary" onclick="pauseDemo()">Ⅱ PAUSE</button>
+        <button class="secondary" onclick="resetDemo()">↺ RESET</button>
+      </div>
+      <div class="field">
+        <label>Simulated turbidity: <b id="ntuLabel">4 NTU</b></label>
+        <input id="ntu" type="range" min="0" max="100" value="4" oninput="updateDemo()">
+        <p class="small">Demo thresholds only: green 0–5, yellow above 5–10, red above 10 NTU. These are not universal safety standards.</p>
+      </div>
+      <div class="field">
+        <label>Filter performance: <b id="perfLabel">70%</b></label>
+        <input id="perf" type="range" min="0" max="100" value="70" oninput="updateDemo()">
+      </div>
+      <div class="grid two">
+        <div class="field"><label>Input volume (L)</label><input id="volume" type="number" min="0" value="1000" oninput="updateDemo()"></div>
+        <div class="field"><label>Tank capacity (L)</label><input id="capacity" type="number" min="0" value="600" oninput="updateDemo()"></div>
+      </div>
+      <div class="status">
+        <span id="bulb" class="bulb"></span>
+        <div><b id="statusTitle">GREEN · DEMO CHECK PASSED</b><div class="small" id="statusDesc">Additional checks may still be needed.</div></div>
+      </div>
+      <div class="meter"><div id="tankFill" class="fill"></div></div>
+      <div class="small">Simulated storage tank fill level</div>
+    </div>
+
+    <div class="card">
+      <div class="kicker">LIVE SIMULATION OUTPUT</div>
+      <div class="grid two" style="margin-top:15px">
+        <div class="metric"><span>Input water</span><strong id="mInput">1,000 L</strong></div>
+        <div class="metric"><span>Processed</span><strong id="mProcessed">700 L</strong></div>
+        <div class="metric"><span>Passes check</span><strong id="mPass">700 L</strong></div>
+        <div class="metric"><span>Held</span><strong id="mHeld">0 L</strong></div>
+        <div class="metric"><span>Rejected/diverted</span><strong id="mReject">300 L</strong></div>
+        <div class="metric"><span>Stored for reuse</span><strong id="mStored">600 L</strong></div>
+      </div>
+      <h3 id="flowDrops" style="margin-top:22px">💧 💧 ➜ 🟢 ➜ 🛢️</h3>
+      <p id="flowText">Water follows the simulated green route.</p>
+    </div>
+  </div>
+</section>
+
+<section class="wrap" id="budget">
+  <div class="kicker">04 / MAIN FEATURE</div>
+  <h2>Smart water reuse. <span style="color:var(--green)">Smarter budget.</span></h2>
+  <p>Build your proposed installation budget. All costs are editable estimates, not verified market quotations. The ₹5 lakh target applies to initial installation.</p>
+  <div class="grid two">
+    <div class="card">
+      <div class="field">
+        <label>Facility type</label>
+        <select id="facility">
+          <option>College campus</option><option>College hostel</option>
+          <option>Apartment complex</option><option>Residential community</option>
+          <option>Custom facility</option>
+        </select>
+      </div>
+      <div class="field"><label>Daily treatment capacity (L/day)</label><input id="dailyCapacity" type="number" min="0" value="2000" oninput="updateBudget()"></div>
+      <div class="controls">
+        <button onclick="sampleBudget()">LOAD SAMPLE CAMPUS BUDGET</button>
+        <button class="secondary" onclick="blankBudget()">START MY OWN BUDGET</button>
+      </div>
+      <div class="budgetgrid" id="budgetItems"></div>
+    </div>
+
+    <div class="card">
+      <div class="kicker">YOUR COST SNAPSHOT</div>
+      <div class="grid two" style="margin-top:14px">
+        <div class="metric"><span>Initial installation</span><strong id="initialCost">₹0</strong></div>
+        <div class="metric"><span>Annual recurring costs</span><strong id="annualCost">₹0</strong></div>
+        <div class="metric"><span>First-year total</span><strong id="firstYear">₹0</strong></div>
+        <div class="metric"><span>Budget remaining</span><strong id="remaining">₹0</strong></div>
+      </div>
+      <div class="meter"><div id="budgetFill" class="fill"></div></div>
+      <div class="status">
+        <span id="budgetBulb" class="bulb"></span>
+        <div><b id="budgetStatus">WITHIN BUDGET</b><div id="budgetMessage" class="small">Initial estimate compared with ₹5 lakh.</div></div>
+      </div>
+      <p id="capacityCost" class="small">Cost per litre/day of capacity: —</p>
+      <h3>Cost breakdown</h3>
+      <div id="costBars"></div>
+      <button onclick="optimize()">✦ OPTIMIZE MY BUDGET</button>
+      <p id="optimization">Your largest cost contributors and possible savings will appear here.</p>
+    </div>
+  </div>
+</section>
+
+<section class="wrap" id="savings">
+  <div class="kicker">05 / WATER IMPACT CALCULATOR</div>
+  <h2>How much water could you recover?</h2>
+  <div class="grid two">
+    <div class="card">
+      <div class="grid two">
+        <div class="field"><label>People using facility</label><input id="people" type="number" value="500" min="0"></div>
+        <div class="field"><label>Basin water/person/day (L)</label><input id="basin" type="number" value="3" min="0"></div>
+        <div class="field"><label>Shower water/person/day (L)</label><input id="shower" type="number" value="12" min="0"></div>
+        <div class="field"><label>Collection efficiency (%)</label><input id="eff" type="number" value="70" min="0" max="100"></div>
+        <div class="field"><label>Quality-stage approval (%)</label><input id="yield" type="number" value="75" min="0" max="100"></div>
+        <div class="field"><label>Reuse demand (%)</label><input id="demandPct" type="number" value="80" min="0" max="100"></div>
+        <div class="field"><label>Operating days/month</label><input id="days" type="number" value="30" min="0" max="31"></div>
+        <div class="field"><label>Daily reuse demand (L)</label><input id="demand" type="number" value="3000" min="0"></div>
+        <div class="field"><label>Available storage (L)</label><input id="storage" type="number" value="1500" min="0"></div>
+        <div class="field"><label>Existing recovery (L/day)</label><input id="existing" type="number" value="0" min="0"></div>
+      </div>
+      <button onclick="calculateWater()">CALCULATE WATER IMPACT ↗</button>
+    </div>
+    <div class="card">
+      <div class="kicker">ESTIMATED DAILY BALANCE</div>
+      <div class="grid two" style="margin-top:15px">
+        <div class="metric"><span>Potential source</span><strong id="wSource">7,500 L</strong></div>
+        <div class="metric"><span>Collected</span><strong id="wCollected">5,250 L</strong></div>
+        <div class="metric"><span>Quality-stage pass</span><strong id="wApproved">3,938 L</strong></div>
+        <div class="metric"><span>Estimated reuse</span><strong id="wReuse">1,500 L</strong></div>
+        <div class="metric"><span>Held/rejected/diverted</span><strong id="wDivert">1,313 L</strong></div>
+        <div class="metric"><span>Unused approved water</span><strong id="wUnused">2,438 L</strong></div>
+        <div class="metric"><span>Monthly fresh water displaced</span><strong id="wMonthly">45,000 L</strong></div>
+        <div class="metric"><span>Annual fresh water displaced</span><strong id="wAnnual">540,000 L</strong></div>
+      </div>
+      <p class="small">Estimates only. Actual savings depend on measured water availability, water quality, treatment, storage and demand.</p>
+    </div>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="kicker">06 / REAL-LIFE APPLICATIONS</div>
+  <h2>Designed for everyday places</h2>
+  <div class="grid four">
+    <div class="card"><div class="appart">🏫💧</div><h3>College campus</h3><p>Explore recovery for landscaping and suitable outdoor cleaning.</p></div>
+    <div class="card"><div class="appart">🛏️🚿</div><h3>College hostel</h3><p>Separate collection and validated treatment for appropriate non-potable uses.</p></div>
+    <div class="card"><div class="appart">🏢🌊</div><h3>Residential community</h3><p>Shared recovery infrastructure connected to nearby demand.</p></div>
+    <div class="card"><div class="appart">🌱💧</div><h3>Community gardens</h3><p>Appropriately treated water for suitable irrigation applications.</p></div>
+  </div>
+</section>
+
+<section class="wrap" id="assistant">
+  <div class="kicker">07 / REWAVE ASSISTANT</div>
+  <h2>Your community water planner 💧</h2>
+  <div class="card">
+    <div class="chips">
+      <button class="secondary" onclick="ask('budget')">Can my campus fit within ₹5 lakh?</button>
+      <button class="secondary" onclick="ask('sensor')">How does the turbidity sensor work?</button>
+      <button class="secondary" onclick="ask('hostel')">How much water could my hostel recover?</button>
+      <button class="secondary" onclick="ask('red')">What happens when the indicator turns red?</button>
+      <button class="secondary" onclick="ask('reuse')">Where can water be reused?</button>
+    </div>
+    <div class="controls">
+      <input id="question" placeholder="Ask a REWAVE question..." style="flex:1">
+      <button onclick="ask(document.getElementById('question').value)">ASK ↗</button>
+    </div>
+    <div id="answer" class="answer">Hi! I can explain the budget, water estimates, sensor states and suitable reuse applications.</div>
+  </div>
+</section>
+
+<section class="wrap" id="impact">
+  <div class="kicker">08 / SDG IMPACT</div>
+  <h2>Local recovery. Wider impact.</h2>
+  <div class="grid three">
+    <div class="card">
+      <div class="icon">💧</div><div class="tag">SDG 6</div>
+      <h3>Clean water & sanitation</h3>
+      <p>Promotes water-use efficiency, responsible wastewater management and water-quality awareness.</p>
+      <h3 id="impactDaily" style="color:var(--green)">1,500 L/day</h3>
+      <span class="small">Estimated daily reuse</span>
+    </div>
+    <div class="card">
+      <div class="icon">🏙️</div><div class="tag" style="color:var(--yellow)">SDG 11</div>
+      <h3>Sustainable communities</h3>
+      <p>Explores more efficient resource use in campuses, hostels, apartments and communities.</p>
+      <h3 id="impactAnnual" style="color:var(--cyan)">540,000 L/year</h3>
+      <span class="small">Estimated annual displacement</span>
+    </div>
+    <div class="card">
+      <div class="icon">🌏</div><h3>Singapore vs REWAVE</h3>
+      <p>Singapore's NEWater uses advanced water-treatment technologies. REWAVE explores a smaller-scale approach for selected local sources.</p>
+      <p class="small">Basic filtration and turbidity monitoring cannot replace advanced treatment or prove water is safe. Testing and compliance depend on intended use.</p>
+    </div>
+  </div>
+  <div class="card" style="margin-top:18px;text-align:center;background:linear-gradient(110deg,#062044,#073d3a)">
+    <h2>REWAVE — RECOVER THE DROP. REUSE THE FUTURE.</h2>
+    <p>Explore how responsible water recovery could be adapted to local campuses and communities.</p>
+    <a href="#home"><button>BACK TO TOP ↑</button></a>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="logo">RE<span>WAVE</span> 💧</div>
+  <p>RECOVER THE DROP. REUSE THE FUTURE.</p>
+  <span class="small">Interactive project concept · Simulated readings · Editable cost assumptions</span>
+</footer>
+
+<script>
+const $=id=>document.getElementById(id);
+const num=id=>Math.max(0,Number($(id).value)||0);
+const money=n=>'₹'+Math.round(n).toLocaleString('en-IN');
+const litres=n=>Math.round(n).toLocaleString('en-IN')+' L';
+
+const layers=[
+'Mesh screen: catches larger debris. It does not remove dissolved pollutants or microbes.',
+'Gravel: can support drainage and distribution in selected filter designs.',
+'Sand: may reduce some suspended particles in a properly designed filter, but is not complete treatment.',
+'Additional media: selected for source water and intended reuse. Any treatment stage must be designed and validated.'
+];
+function layer(i){$('layerText').textContent=layers[i]}
+
+let demoTimer=null;
+function updateDemo(){
+ const ntu=num('ntu'),perf=Math.min(100,num('perf'))/100;
+ const input=num('volume'),cap=num('capacity');
+ $('ntuLabel').textContent=ntu+' NTU';
+ $('perfLabel').textContent=Math.round(perf*100)+'%';
+ const state=ntu<=5?'green':ntu<=10?'yellow':'red';
+ $('bulb').className='bulb '+(state==='green'?'':state);
+ $('statusTitle').textContent=state.toUpperCase()+' · '+(state==='green'?'DEMO CHECK PASSED':state==='yellow'?'HOLD / RECHECK':'REJECT / DIVERT');
+ $('statusDesc').textContent=state==='green'?'Configured turbidity check passed; further checks may be needed.':state==='yellow'?'Hold water for rechecking in this simulation.':'Water is diverted in this simulation.';
+ const processed=input*perf;
+ const passed=state==='green'?processed:0;
+ const held=state==='yellow'?processed:0;
+ const rejected=Math.max(0,input-processed)+(state==='red'?processed:0);
+ const stored=Math.min(passed,cap);
+ $('mInput').textContent=litres(input);
+ $('mProcessed').textContent=litres(processed);
+ $('mPass').textContent=litres(passed);
+ $('mHeld').textContent=litres(held);
+ $('mReject').textContent=litres(rejected);
+ $('mStored').textContent=litres(stored);
+ $('tankFill').style.width=(cap?Math.min(100,stored/cap*100):0)+'%';
+ $('flowDrops').textContent=state==='green'?'💧 💧 ➜ 🟢 ➜ 🛢️':state==='yellow'?'💧 💧 ➜ 🟡 ⏸️':'💧 💧 ➜ 🔴 ↪️';
+ $('flowText').textContent=state==='green'?'Water follows the simulated pass route.':state==='yellow'?'Water is held for rechecking.':'Water is diverted and not added to approved storage.';
+}
+function startDemo(){
+ pauseDemo();updateDemo();
+ demoTimer=setInterval(()=>{
+   $('ntu').value=(Number($('ntu').value)+1)%101;
+   updateDemo();
+ },500);
+}
+function pauseDemo(){if(demoTimer){clearInterval(demoTimer);demoTimer=null}}
+function resetDemo(){
+ pauseDemo();$('ntu').value=4;$('perf').value=70;
+ $('volume').value=1000;$('capacity').value=600;updateDemo();
+}
+
+const costs=[
+ ['Collection pipes & plumbing','pipes',45000,'initial'],
+ ['Collection tank','collect',35000,'initial'],
+ ['Replaceable filter housing','housing',40000,'initial'],
+ ['Filter media','media',18000,'initial'],
+ ['Turbidity sensor','sensor',25000,'initial'],
+ ['Indicator lights & controls','lights',8000,'initial'],
+ ['Storage tank','storageTank',55000,'initial'],
+ ['Pump & control equipment','pump',30000,'initial'],
+ ['Installation & labour','labour',65000,'initial'],
+ ['Water-quality testing','testing',30000,'initial'],
+ ['Commissioning','commission',15000,'initial'],
+ ['Contingency allowance','contingency',35000,'initial'],
+ ['Annual maintenance','maintenance',24000,'annual'],
+ ['Filter-media replacement','replacement',12000,'annual']
+];
+
+function renderCosts(){
+ $('budgetItems').innerHTML='';
+ costs.forEach(c=>{
+  const div=document.createElement('div');
+  div.className='budgetitem';
+  div.innerHTML=`<label for="cost-${c[1]}">${c[0]}</label>
+   <input id="cost-${c[1]}" type="number" min="0" step="500" value="${c[2]}">
+   <small>${c[3]==='annual'?'Annual recurring cost':'Initial installation estimate'}</small>`;
+  $('budgetItems').appendChild(div);
+  $('cost-'+c[1]).addEventListener('input',updateBudget);
+ });
+ updateBudget();
+}
+function cost(c){return Math.max(0,Number($('cost-'+c[1]).value)||0)}
+function updateBudget(){
+ let initial=0,annual=0;
+ const values=costs.map(c=>({...{name:c[0],key:c[1],type:c[3]},amount:cost(c)}));
+ values.forEach(c=>c.type==='initial'?initial+=c.amount:annual+=c.amount);
+ $('initialCost').textContent=money(initial);
+ $('annualCost').textContent=money(annual);
+ $('firstYear').textContent=money(initial+annual);
+ $('remaining').textContent=money(500000-initial);
+ $('budgetFill').style.width=Math.min(100,initial/500000*100)+'%';
+ const state=initial>500000?'red':initial>=425000?'yellow':'green';
+ $('budgetBulb').className='bulb '+(state==='green'?'':state);
+ $('budgetStatus').textContent=state==='green'?'GREEN · WITHIN BUDGET':state==='yellow'?'YELLOW · APPROACHING LIMIT':'RED · BUDGET EXCEEDED';
+ $('budgetMessage').textContent=state==='red'?'Estimate exceeds ₹5 lakh. Review scope, sizing or phased installation.':state==='yellow'?'Estimate is close to the ₹5 lakh target.':'Initial installation is within the ₹5 lakh target.';
+ const cap=num('dailyCapacity');
+ $('capacityCost').textContent='Initial cost per L/day capacity: '+(cap?money(initial/cap)+' per L/day':'Enter capacity above zero.');
+ const top=values.filter(c=>c.type==='initial').sort((a,b)=>b.amount-a.amount).slice(0,5);
+ const max=Math.max(1,...top.map(c=>c.amount));
+ $('costBars').innerHTML=top.map(c=>`<div class="barrow"><span>${c.name.split(' ').slice(0,2).join(' ')}</span><div class="bar"><span style="width:${c.amount/max*100}%"></span></div><b>${money(c.amount)}</b></div>`).join('');
+}
+function sampleBudget(){
+ costs.forEach(c=>$('cost-'+c[1]).value=c[2]);
+ $('dailyCapacity').value=2000;updateBudget();
+ $('optimization').textContent='Sample campus planning estimates loaded. Adjust the values to match your site and obtain supplier quotations.';
+}
+function blankBudget(){
+ costs.forEach(c=>$('cost-'+c[1]).value=0);
+ updateBudget();
+ $('optimization').textContent='Blank budget ready. Enter your own prices and include testing, commissioning and maintenance.';
+}
+function optimize(){
+ const vals=costs.filter(c=>c[3]==='initial').map(c=>({name:c[0],amount:cost(c)})).sort((a,b)=>b.amount-a.amount);
+ const total=vals.reduce((s,c)=>s+c.amount,0);
+ const biggest=vals.slice(0,3).map(c=>c.name+' ('+money(c.amount)+')').join('; ');
+ $('optimization').textContent='Largest initial costs: '+(biggest||'none entered')+'. '+(total>500000?'The estimate exceeds ₹5 lakh. Investigate right-sizing tanks, shorter pipe routes, phased deployment and competitive quotations. ':'Compare supplier quotations, tank sizing and pipe routes for potential savings. ')+'Do not remove necessary treatment, testing or essential safety equipment.';
+}
+
+function calculateWater(){
+ const people=num('people'),source=people*(num('basin')+num('shower'));
+ const collected=source*Math.min(100,num('eff'))/100;
+ const approved=collected*Math.min(100,num('yield'))/100;
+ const demand=num('demand')*Math.min(100,num('demandPct'))/100;
+ const reuse=Math.min(approved,demand,num('storage'));
+ const held=collected-approved;
+ const unused=Math.max(0,approved-reuse);
+ const diverted=Math.max(0,source-collected)+held;
+ const monthly=reuse*Math.min(31,num('days'));
+ const annual=monthly*12;
+ const out={wSource:source,wCollected:collected,wApproved:approved,wReuse:reuse,wDivert:diverted,wUnused:unused,wMonthly:monthly,wAnnual:annual};
+ Object.entries(out).forEach(([id,val])=>$(id).textContent=litres(val));
+ $('impactDaily').textContent=litres(reuse)+'/day';
+ $('impactAnnual').textContent=litres(Math.max(0,reuse-num('existing'))*Math.min(31,num('days'))*12)+'/year';
+}
+function ask(q){
+ q=String(q||'').toLowerCase();
+ let answer;
+ if(q.includes('budget')||q.includes('₹5')||q.includes('campus')){
+  const total=costs.filter(c=>c[3]==='initial').reduce((s,c)=>s+cost(c),0);
+  answer='Your current initial installation estimate is '+money(total)+'. '+(total<=500000?'It is within the ₹5 lakh planning target.':'It exceeds the target. Review tank sizing, installation scope, pipe routing or phased implementation.')+' Annual recurring costs are separate.';
+ }else if(q.includes('sensor')||q.includes('turbidity')){
+  answer='Turbidity estimates cloudiness caused by suspended particles. In this demo, green means the configured criterion passed, yellow means hold/recheck and red means reject/divert. Turbidity alone cannot confirm microbiological or chemical safety.';
+ }else if(q.includes('hostel')||q.includes('water')||q.includes('recover')){
+  answer='Based on your current water calculator settings, estimated reuse is '+$('wReuse').textContent+' per day. This is a planning estimate, not a measured result.';
+ }else if(q.includes('red')||q.includes('reject')){
+  answer='Red means rejected or diverted in this simulation. It must not enter approved-water storage. The appropriate further-treatment or disposal route depends on water quality and local requirements.';
+ }else if(q.includes('reuse')||q.includes('where')){
+  answer='Potential non-potable uses include toilet flushing, suitable outdoor cleaning and landscaping, but only after treatment and water-quality validation appropriate for the intended use.';
+ }else{
+  answer='Ask me about the cost planner, water estimates, turbidity indicators, filter layers or reuse applications.';
+ }
+ $('answer').textContent=answer;
+}
+renderCosts();updateDemo();calculateWater();
+</script>
+</body>
+</html>
